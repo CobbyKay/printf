@@ -2,35 +2,49 @@
 #include <stdlib.h>
 
 /**
- * print_c - Prints characters
- * @c: Character
+ * check_formats - Checks for specifiers
+ * @format: Specifier
  *
- * Return: 1: The lenght of a char
+ * Return: Pointer to function or NULL
  */
-int print_c(va_list c)
-{
-	char ch = (char)va_arg(c, int);
+int _printf(const char *format, ...) {
+    va_list args;
+    va_start(args, format);
 
-	_putchar(ch);
-	return (1);
+    int printed_chars = 0;
+    char ch;
+
+    while ((ch = *format)) {
+        if (ch == '%') {
+            format++; // Move past '%'
+
+            // Check for conversion specifiers
+            switch (*format) {
+                case 'd':
+                case 'i': {
+                    int num = va_arg(args, int);
+                    printed_chars += printf("%d", num);
+                    break;
+                }
+                default:
+                    putchar('%');
+                    printed_chars++;
+                    break;
+            }
+        } else {
+            putchar(ch);
+            printed_chars++;
+        }
+
+        format++;
+    }
+
+    va_end(args);
+    return printed_chars;
 }
 
-/**
- * print_s - Prints strings
- * @s: Strings
- *
- * Return: The lenght of the string
- */
-int print_s(va_list s)
-{
-	int count;
-	char *str = va_arg(s, char *);
-
-	if (str == NULL)
-		str = "(null)";
-	for (count = 0; str[count]; count++)
-	{
-		_putchar(str[count]);
-	}
-	return (count);
+int main() {
+    int number = 42;
+    _printf("The answer is %d\n", number);
+    return 0;
 }
