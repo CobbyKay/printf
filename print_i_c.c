@@ -1,12 +1,6 @@
-#include "main.h"
-#include <stdlib.h>
+#include <stdio.h>
+#include <stdarg.h>
 
-/**
- * check_formats - Checks for specifiers
- * @format: Specifier
- *
- * Return: Pointer to function or NULL
- */
 int _printf(const char *format, ...) {
     va_list args;
     va_start(args, format);
