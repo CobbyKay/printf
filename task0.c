@@ -4,7 +4,7 @@
 * _printf - produces output according to a format.
 * @format: character string containing directives.
 *
-* Return: the number of characters printed (excluding the null byte used to end output to strings)
+* Return: the number of characters printed (excluding the null byte)
 */
 int _printf(const char *format, ...)
 {
@@ -58,5 +58,5 @@ format++;
 
 va_end(args);
 
-return count;
+return (count);
 }
