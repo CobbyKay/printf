@@ -2,74 +2,35 @@
 #include <stdlib.h>
 
 /**
- * check_formats - Checks for specifiers
- * @format: Specifier
+ * print_c - Prints characters
+ * @c: Character
  *
- * Return: Pointer to function or NULL
+ * Return: 1: The lenght of a char
  */
-static int (*check_formats(const char *format))(va_list)
+int print_c(va_list c)
 {
-	unsigned int i;
-	print_t mystruct[] = {
-		{"c", print_c},
-		{"s", print_s},
-		{"i", print_i},
-		{"d", print_d},
-		{"b", print_b},
-		{"R", print_R},
-		{NULL, NULL}
-	};
+	char ch = (char)va_arg(c, int);
 
-	for (i = 0; mystruct[i].t != NULL; i++)
-	{
-		if (*(mystruct[i].t) == *format)
-		{
-			break;
-		}
-	}
-	return (mystruct[i].f);
+	_putchar(ch);
+	return (1);
 }
 
 /**
- * _printf - Function that prints with a format
- * @format: Format passed to printf
+ * print_s - Prints strings
+ * @s: Strings
  *
- * Return: number of characters printed
+ * Return: The lenght of the string
  */
-int _printf(const char *format, ...)
+int print_s(va_list s)
 {
-	unsigned int i = 0, count = 0;
-	va_list mylist;
-	int (*f)(va_list);
+	int count;
+	char *str = va_arg(s, char *);
 
-	if (format == NULL)
-		return (-1);
-	va_start(mylist, format);
-	while (format[i])
+	if (str == NULL)
+		str = "(null)";
+	for (count = 0; str[count]; count++)
 	{
-		for (; format[i] != '%' && format[i]; i++)
-		{
-			_putchar(format[i]);
-			count++;
-		}
-		if (!format[i])
-			return (count);
-		f = check_formats(&format[i + 1]);
-		if (f != NULL)
-		{
-			count += f(mylist);
-			i += 2;
-			continue;
-		}
-		if (!format[i + 1])
-			return (-1);
-		_putchar(format[i]);
-		count++;
-		if (format[i + 1] == '%')
-			i += 2;
-		else
-			i++;
+		_putchar(str[count]);
 	}
-	va_end(mylist);
 	return (count);
 }
