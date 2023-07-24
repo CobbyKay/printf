@@ -4,7 +4,7 @@
 * _printf - produces output according to a format.
 * @format: character string containing directives.
 *
-* Return: the number of characters printed (excluding the null byte)
+* Return: the number of characters printed (excluding the null byte used to end output to strings)
 */
 int _printf(const char *format, ...)
 {
@@ -31,11 +31,11 @@ format++;
 
 va_end(args);
 
-return (count);
+return count;
 }
 
 /**
-* handle_conversion_specifier - handles the conversion specifier.
+* handle_conversion_specifier - handles the conversion specifier in the format string.
 * @format: character string containing directives.
 * @args: variable argument list.
 *
@@ -51,7 +51,7 @@ switch (*format)
 case 'c':
 c = va_arg(args, int);
 write(1, &c, 1);
-return (1);
+return 1;
 case 's':
 s = va_arg(args, char *);
 int count = 0;
@@ -61,13 +61,13 @@ write(1, s, 1);
 s++;
 count++;
 }
-return (count);
+return count;
 case '%':
 write(1, "%", 1);
-return (1);
+return 1;
 default:
 write(1, "%", 1);
 write(1, format, 1);
-return (2);
+return 2;
 }
 }
