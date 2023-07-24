@@ -1,51 +1,75 @@
 #include "main.h"
+#include <stdlib.h>
 
 /**
- * print_i - Prints integer
- * @i: Int to print
+ * check_formats - Checks for specifiers
+ * @format: Specifier
  *
- * Return: Numbers of integers printed
+ * Return: Pointer to function or NULL
  */
-int print_i(va_list i)
+static int (*check_formats(const char *format))(va_list)
 {
-	int count = 0;
+	unsigned int i;
+	print_t mystruct[] = {
+		{"c", print_c},
+		{"s", print_s},
+		{"i", print_i},
+		{"d", print_d},
+		{"b", print_b},
+		{"R", print_R},
+		{NULL, NULL}
+	};
 
-	if (i < 0)
+	for (i = 0; mystruct[i].t != NULL; i++)
 	{
-		putchar('-');
-		i = -i;
+		if (*(mystruct[i].t) == *format)
+		{
+			break;
+		}
 	}
-	if (i / 10)
-	{
-		print_i(i / 10);
-		count++;
-	}
-	putchar((i % 10) + '0');
-
-	return (count);
+	return (mystruct[i].f);
 }
 
 /**
- * print_d - Prints a decimal number
- * @d: Number to print
+ * _printf - Function that prints with a format
+ * @format: Format passed to printf
  *
- * Return: Numbers of decimals printed
+ * Return: number of characters printed
  */
-int print_d(va_list d)
+int _printf(const char *format, ...)
 {
-	int count = 0;
+	unsigned int i = 0, count = 0;
+	va_list mylist;
+	int (*f)(va_list);
 
-	if (i < 0)
+	if (format == NULL)
+		return (-1);
+	va_start(mylist, format);
+	while (format[i])
 	{
-		putchar('-');
-		i = -i;
-	}
-	if (i / 10)
-	{
-		print_d(i / 10);
+		for (; format[i] != '%' && format[i]; i++)
+		{
+			_putchar(format[i]);
+			count++;
+		}
+		if (!format[i])
+			return (count);
+		f = check_formats(&format[i + 1]);
+		if (f != NULL)
+		{
+			count += f(mylist);
+			i += 2;
+			continue;
+		}
+		if (!format[i + 1])
+			return (-1);
+		_putchar(format[i]);
 		count++;
+		if (format[i + 1] == '%')
+			i += 2;
+		else
+			i++;
 	}
-	putchar((i % 10) + '0');
-
+	va_end(mylist);
 	return (count);
 }
