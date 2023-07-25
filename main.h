@@ -15,6 +15,7 @@ typedef struct print
 
 int _putchar(char c);
 int _printf(const char *format, ...);
+<<<<<<< HEAD
 int print_c(va_list c);
 int print_s(va_list s);
 int print_i(va_list i);
@@ -23,3 +24,7 @@ int print_b(va_list b);
 int print_R(va_list R);
 
 #endif
+=======
+
+#endif /* MAIN_H */
+>>>>>>> 1949fcaeebe776f829854a948fce2d4731f28908
